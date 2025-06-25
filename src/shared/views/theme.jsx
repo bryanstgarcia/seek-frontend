@@ -7,18 +7,18 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
     palette: {
-        mode: 'dark',
+        mode: "dark",
         primary: {
-            main: "#1976d2",
-            light: "#63a4ff",
-            dark: "#004ba0",
-            contrastText: "#fff",
+            main: "#836FFF",
+            dark: "#211951", 
+            light: "#AFA7FF",
+            contrastText: "#FFFFFF",
         },
         secondary: {
-            main: "#9c27b0",
-            light: "#d05ce3",
-            dark: "#6a0080",
-            contrastText: "#fff",
+            main: "#15F5BA",
+            dark: "#0BAF84",
+            light: "#8CFFE3",
+            contrastText: "#000000",
         },
         error: {
             main: "#d32f2f",
@@ -45,7 +45,7 @@ const theme = createTheme({
             contrastText: "#fff",
         },
         neutral: {
-            black: "#242424",
+            black: "#181818",
             white: "#f0f0f0",
             light: "#f5f5f5",
             main: "#9e9e9e",
