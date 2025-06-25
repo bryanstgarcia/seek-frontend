@@ -13,7 +13,7 @@ function App() {
       <CssBaseline />
       <Navbar />
         { <Outlet />}
-      <Footer />
+      {/* <Footer /> */}
     </ThemeProviderComponent>
     </>
   )
