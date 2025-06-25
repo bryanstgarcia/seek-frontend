@@ -43,11 +43,11 @@ export const Hero = () => {
       >
         Boost your productivity with our intuitive and powerful task manager. <br />Stay on top of your work, deadlines, and goals—all in one place.
       </Typography>
-      <Link 
+      <Button
         component={RouterLink} 
         to="/login"
         variant="contained"
-        color="primary"
+        color={"primary"}
         size="large"
         sx={{
           px: 5,
@@ -59,7 +59,7 @@ export const Hero = () => {
         }}
       >
         Get Started
-      </Link>
+      </Button>
     </Box>
   );
 };
