@@ -1,0 +1,15 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#root {
+  width: 100%;
+}
+.main-container {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  min-width: 350px;
+}
