@@ -9,7 +9,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import LoginIcon from "@mui/icons-material/Login";
 import Button from '@mui/material/Button';
-
+import { Link as RouterLink } from 'react-router';
+import { Link } from "@mui/material";
 export function Navbar() {
     const [auth, _] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -26,14 +27,17 @@ export function Navbar() {
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
             <Box sx={{ flexGrow: 1, maxWidth: "1480px", width: "100%" }}>
                 <AppBar position="static" variant="dense">
-                    <Toolbar>
-                        <Typography
-                            variant="h6"
-                            component="div"
-                            sx={{ flexGrow: 1 }}
+                    <Toolbar sx={{ display: "flex", justifyContent: "space-between"}}>
+                        <Link
+                            to="/"
+                            component={RouterLink}
+                            variant="h5"
+                            color="secondary.light"
+                            fontWeight={600}
+                            sx={{ textDecoration: "none" }}
                         >
-                            Task Manager
-                        </Typography>
+                            TManager
+                        </Link>
                         {auth ? (
                             <div>
                                 <IconButton
@@ -70,6 +74,8 @@ export function Navbar() {
                         ) : (
                             <Box sx={{display: "flex", gap: 2}}>
                                 <Button
+                                    to="/login"
+                                    component={RouterLink}
                                     variant="contained"
                                     href="#contained-buttons"
                                     endIcon={<LoginIcon />}
@@ -77,6 +83,8 @@ export function Navbar() {
                                     Log In
                                 </Button>
                                 <Button
+                                    to="/signup"
+                                    component={RouterLink}
                                     variant="outlined"
                                     href="#contained-buttons"
                                 >
