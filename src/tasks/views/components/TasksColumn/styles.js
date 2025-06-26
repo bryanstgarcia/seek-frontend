@@ -1,9 +1,8 @@
 export const styles = {
-    columnBox: {
+    columnMainBox: {
         flex: 1,
         backgroundColor: "neutral.black",
         borderRadius: 2,
-        boxShadow: 2,
         p: 2,
         minHeight: 0,
         height: "100%",
@@ -11,6 +10,20 @@ export const styles = {
         flexDirection: "column",
         alignItems: "stretch",
         gap: 1,
+    },
+    columnBox: {
+        display: "flex",
+        flexFlow: "column nowrap",
+        alignItems: "stretch",
+        justifyContent: "flex-start",
+        gap: 1,
+        flex: 1,
+        backgroundColor: "neutral.black",
+        borderRadius: 2,
+        boxShadow: 2,
+        paddingRight: 1,
+        minHeight: 0,
+        height: "auto",
         overflowY: "auto",
         "&::-webkit-scrollbar": {
             width: 8,

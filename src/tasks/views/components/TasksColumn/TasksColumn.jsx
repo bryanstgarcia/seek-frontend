@@ -3,10 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { styles } from "./styles";
 export const TasksColumn = ({ title, children }) => {
     return (
-        <Box
-            key={title}
-            sx={styles.columnBox}
-        >
+        <Box sx={styles.columnMainBox}>
             <Typography
                 variant="h6"
                 fontWeight={700}
@@ -15,7 +12,12 @@ export const TasksColumn = ({ title, children }) => {
             >
                 {title}
             </Typography>
-            { children }
+            <Box
+                key={title}
+                sx={styles.columnBox}
+            >
+                { children }
+            </Box>
         </Box>
     );
 };
