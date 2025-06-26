@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,18 +9,29 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import LoginIcon from "@mui/icons-material/Login";
 import Button from '@mui/material/Button';
-import { Link as RouterLink } from 'react-router';
+import { Link as RouterLink, useNavigate } from 'react-router';
 import { Link } from "@mui/material";
-export function Navbar() {
-    const [auth, _] = useState(false);
-    const [anchorEl, setAnchorEl] = useState(null);
+import { AuthContext } from "../../../../authentication/state/AuthContext.jsx";
 
+export function Navbar() {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const { userAuth, authenticate } = useContext(AuthContext);
+    const isAuthenticated = Boolean(userAuth?.token);
+    const navigate = useNavigate()
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleLogout = () => {
+        authenticate({ userId: null, token: null });
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        navigate("/")
+        handleClose();
     };
 
     return (
@@ -38,7 +49,7 @@ export function Navbar() {
                         >
                             TManager
                         </Link>
-                        {auth ? (
+                        {isAuthenticated ? (
                             <div>
                                 <IconButton
                                     size="large"
@@ -65,10 +76,23 @@ export function Navbar() {
                                     open={Boolean(anchorEl)}
                                     onClose={handleClose}
                                 >
-                                    <MenuItem onClick={handleClose}>
+                                    <MenuItem
+                                        component={RouterLink}
+                                        to="/dashboard"
+                                        onClick={handleClose}
+                                    >
                                         Dashboard
                                     </MenuItem>
-                                    <MenuItem onClick={handleClose}>Tasks</MenuItem>
+                                    <MenuItem
+                                        component={RouterLink}
+                                        to="/tasks"
+                                        onClick={handleClose}
+                                    >
+                                        Tasks
+                                    </MenuItem>
+                                    <MenuItem onClick={handleLogout}>
+                                        Sign out
+                                    </MenuItem>
                                 </Menu>
                             </div>
                         ) : (
