@@ -7,35 +7,53 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Chip from "@mui/material/Chip";
 import { styles } from "./styles";
+import { useCreateTask } from "../../../hooks/useCreateTask";
+import { useGetTasks } from "../../../hooks/useGetTasks";
 
 export function TaskCreationModal({ open, handleClose }) {
     const [taskName, setTaskName] = React.useState("");
     const [taskDescription, setTaskDescription] = React.useState("");
-    const [steps, setSteps] = React.useState([""]);
+    const [tagInput, setTagInput] = React.useState("");
+    const [tags, setTags] = React.useState([]);
+    const { createTask, loading, error } = useCreateTask();
+    const { getTasks } = useGetTasks();
 
-    const handleStepChange = (index, value) => {
-        const newSteps = [...steps];
-        newSteps[index] = value;
-        setSteps(newSteps);
+    const handleAddTag = () => {
+        const trimmed = tagInput.trim();
+        if (trimmed && !tags.includes(trimmed)) {
+            setTags([...tags, trimmed]);
+        }
+        setTagInput("");
     };
 
-    const handleAddStep = () => {
-        if (steps.length < 10) {
-            setSteps([...steps, ""]);
+    const handleDeleteTag = (tagToDelete) => {
+        setTags(tags.filter((tag) => tag !== tagToDelete));
+    };
+
+    const handleTagInputKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleAddTag();
         }
     };
 
-    const handleDeleteStep = (index) => {
-        if (steps.length > 1) {
-            setSteps(steps.filter((_, i) => i !== index));
-        }
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle create logic here
-        handleClose();
+        const result = await createTask({
+            title: taskName,
+            description: taskDescription,
+            tags,
+        });
+        if (result) {
+            setTaskName("");
+            setTaskDescription("");
+            setTags([]);
+            setTagInput("");
+            await getTasks();
+            handleClose();
+        }
     };
 
     return (
@@ -76,59 +94,48 @@ export function TaskCreationModal({ open, handleClose }) {
                     maxRows={4}
                     sx={{ mb: 2 }}
                 />
-                <Typography variant="subtitle1" fontWeight={600} mb={1}>
-                    {"Steps (max 10 step)"}
-                </Typography>
-                {steps.map((step, index) => (
-                    <Box
-                        key={index}
-                        display="flex"
-                        alignItems="center"
-                        sx={{ mb: 1 }}
-                    >
-                        <TextField
-                            label={`Step ${index + 1}`}
-                            value={step}
-                            onChange={(e) =>
-                                handleStepChange(index, e.target.value)
-                            }
-                            fullWidth
-                            disabled={index >= 10}
-                        />
-                        <IconButton
-                            aria-label="delete step"
-                            onClick={() => handleDeleteStep(index)}
-                            disabled={steps.length === 1}
-                            sx={{ ml: 1 }}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    </Box>
-                ))}
-                <Box display="flex" alignItems="center" mb={2}>
+                <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+                    <TextField
+                        label="Add Tag"
+                        value={tagInput}
+                        onChange={(e) => setTagInput(e.target.value)}
+                        onKeyDown={handleTagInputKeyDown}
+                        size="small"
+                        sx={{ flex: 1 }}
+                    />
                     <Button
                         variant="outlined"
-                        startIcon={<AddIcon />}
-                        onClick={handleAddStep}
-                        disabled={steps.length >= 10}
-                        sx={{ mr: 2 }}
+                        onClick={handleAddTag}
+                        disabled={!tagInput.trim()}
+                        sx={{ minWidth: 40 }}
                     >
-                        Add Step
+                        <AddIcon />
                     </Button>
-                    <Typography
-                        variant="caption"
-                        color={steps.length >= 10 ? "error" : "text.secondary"}
-                    >
-                        {steps.length}/10 steps
-                    </Typography>
                 </Box>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
+                    {tags.map((tag) => (
+                        <Chip
+                            key={tag}
+                            label={tag}
+                            onDelete={() => handleDeleteTag(tag)}
+                            deleteIcon={<DeleteIcon />}
+                        />
+                    ))}
+                </Box>
+                {error && (
+                    <Typography color="error" sx={{ mb: 2 }}>
+                        {error}
+                    </Typography>
+                )}
                 <Button
                     type="submit"
                     variant="contained"
                     color="primary"
                     fullWidth
+                    disabled={loading}
+                    loading={loading}
                 >
-                    Create
+                    {loading ? "Creating..." : "Create"}
                 </Button>
             </Box>
         </Modal>
