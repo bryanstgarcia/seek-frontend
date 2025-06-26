@@ -1,46 +1,39 @@
-import { Box, TextField, Button, Typography, useTheme} from '@mui/material';
-import React, { useState } from 'react';
+import { Box, TextField, Button, Typography, useTheme } from "@mui/material";
+import React, { useState } from "react";
+import { useRegister } from "../../hooks/useRegister";
+import Alert from "@mui/material/Alert";
+import { styles } from "./styles";
+import { useNavigate } from "react-router";
 
 export const SignUp = () => {
     const theme = useTheme();
-
+    const navigate = useNavigate()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [success, setSuccess] = useState(null);
+    const { register, loading, error } = useRegister();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle login logic here
+        const result = await register(email, password);
+        
+        if (result) {
+            setSuccess(true);
+            setTimeout(() => {
+                navigate("/login")
+                setSuccess(null)
+            }, 2000)
+        }
+
     };
 
     return (
-        <Box
-            sx={{
-                minHeight: "90vh",
-                mx: 'auto',
-                p: 4,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                gap: 3,
-                boxShadow: 3,
-                borderRadius: 2,
-            }}
-        >
+        <Box sx={styles.mainBox}>
             <Box
                 component="form"
                 onSubmit={handleSubmit}
                 sx={{
-                    maxWidth: 600,
-                    width: "100%",
-                    mx: 'auto',
-                    mt: 8,
-                    p: 8,
-                    pt: 6,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 3,
-                    boxShadow: 3,
-                    borderRadius: 2,
+                    ...styles.form,
                     backgroundColor: theme.palette.neutral.black,
                 }}
             >
@@ -48,8 +41,15 @@ export const SignUp = () => {
                     Sign up ⚡️
                 </Typography>
                 <Typography component="p" variant="h6" fontWeight={400} mb={2}>
-                    Start strong—sign up now and turn your plans into progress, one task at a time!
+                    Start strong—sign up now and turn your plans into progress,
+                    one task at a time!
                 </Typography>
+                {error ? (
+                    <Alert severity="error">There is an error: {error}</Alert>
+                ) : null}
+                {success ? (
+                    <Alert severity="success">Registration successful!</Alert>
+                ) : null}
                 <TextField
                     label="Email"
                     type="email"
@@ -68,10 +68,17 @@ export const SignUp = () => {
                     fullWidth
                     autoComplete="current-password"
                 />
-                <Button type="submit" variant="contained" color="primary" size="large">
-                    Log In
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    disabled={loading}
+                    loading={loading}
+                >
+                    {loading ? "Registering..." : "Sign Up"}
                 </Button>
             </Box>
         </Box>
     );
-}
+};
