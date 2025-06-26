@@ -1,12 +1,70 @@
-# React + Vite
+# TManager - Task Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TManager is a modern task management application built with React and Vite. It provides user authentication, task CRUD operations, and a responsive dashboard for tracking your productivity.
 
-Currently, two official plugins are available:
+## Features
+- User authentication (sign up, log in, log out)
+- Create, read, update, and delete tasks
+- Task status management (pending, in progress, completed)
+- Tagging and categorization of tasks
+- Responsive dashboard with task statistics
+- Protected routes for authenticated users
+- Global state management for tasks
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Folder Structure
+```
+frontend/
+├── src/
+│   ├── authentication/   # Auth logic, context, hooks, services, adapters
+│   ├── shared/           # Shared components, router, global state
+│   ├── tasks/            # Task CRUD, dashboard, hooks, adapters, services
+│   └── main.jsx          # App entry point
+│   └── index.css         # Global styles
+├── public/               # Static assets
+├── package.json          # Project dependencies
+├── vite.config.js        # Vite configuration
+└── README.md             # Project documentation
+```
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+- Node.js (v20+ recommended)
+- npm or yarn
+
+### Setup
+1. **Install dependencies:**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+2. **Configure environment variables:**
+   - Create a `.env` file in the project root:
+     ```env
+     VITE_API_URL=http://localhost:8000
+     ```
+   - Replace the URL with your backend API endpoint.
+
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+   The app will be available at [http://localhost:5173](http://localhost:5173) by default.
+
+## Usage
+- **Sign Up / Log In:** Create an account or log in to access your tasks.
+- **Dashboard:** View a summary of your tasks (total, pending, in progress, completed).
+- **Tasks:** Create, update, delete, and manage the status of your tasks. Add tags for better organization.
+- **Protected Routes:** `/tasks` and `/dashboard` are only accessible to authenticated users.
+- **Log Out:** Use the "Sign out" option in the navbar menu to close your session.
+
+## Technologies Used
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [Material UI](https://mui.com/)
+- [React Router](https://reactrouter.com/)
+- Context API for global state
+
