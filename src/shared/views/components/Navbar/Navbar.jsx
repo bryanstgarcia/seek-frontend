@@ -78,13 +78,6 @@ export function Navbar() {
                                 >
                                     <MenuItem
                                         component={RouterLink}
-                                        to="/dashboard"
-                                        onClick={handleClose}
-                                    >
-                                        Dashboard
-                                    </MenuItem>
-                                    <MenuItem
-                                        component={RouterLink}
                                         to="/tasks"
                                         onClick={handleClose}
                                     >
