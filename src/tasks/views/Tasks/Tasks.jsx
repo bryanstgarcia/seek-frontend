@@ -1,34 +1,53 @@
 import React from "react";
-import { Box, Card, CardContent } from "@mui/material";
+import { Box } from "@mui/material";
 import { TasksBoard } from "../components/TasksBoard/TasksBoard.jsx";
 import { TasksColumn } from "../components/TasksColumn/TasksColumn.jsx";
 import { ActionBar } from "../components/ActionBar/ActionBar.jsx";
+import { TaskCard } from "../components/TaskCard/TaskCard.jsx";
+import { useGetTasks } from "../../hooks/useGetTasks";
+import { Dashboard } from "../components/Dashboard/Dashboard.jsx";
 
-const columns = [
-    { title: "Pending 📋", cards: ["Hola", "como", "estas"] },
-    { title: "In Progress 👷🏽", cards: ["Hola", "como", "estas"] },
-    { title: "Completed ✅", cards: ["Hola", "como", "estas","Hola", "como", "estas","Hola", "como", "estas",
-        "Hola", "como", "estas",
-    ] },
-];
+const statusMap = {
+    pending: "Pending 📋",
+    "in_progress": "In Progress 👷🏽",
+    completed: "Completed ✅",
+};
 
 export const Tasks = () => {
+    const { tasks, loading, error } = useGetTasks({ autoFetch: true });
+
+    // Group tasks by status
+    const columns = Object.entries(statusMap).map(([status, title]) => ({
+        title,
+        cards: tasks.filter((task) => task.status === status),
+    }));
+
     return (
         <Box sx={{ width: "100%", minHeight: "90vh" }}>
             {/* Header */}
-            <ActionBar />
+            <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                <Dashboard />
+                <ActionBar />
+            </Box>
             {/* Columns */}
-            <TasksBoard height={"70vh"}>
+            <TasksBoard>
                 {columns.map((col) => (
-                    <TasksColumn title={col.title}>
-                        {col.cards.map((cardData) => (
-                            <Card sx={{minHeight: 100}}>
-                                <CardContent>{cardData}</CardContent>
-                            </Card>
+                    <TasksColumn title={col.title} key={crypto.randomUUID()}>
+                        {col.cards.map((card) => (
+                            <TaskCard
+                                id={card.id}
+                                key={card.id}
+                                title={card.title}
+                                description={card.description}
+                                status={card.status}
+                                tags={card.tags}
+                            />
                         ))}
                     </TasksColumn>
                 ))}
             </TasksBoard>
+            {loading && <Box sx={{ textAlign: "center", mt: 4 }}>Loading tasks...</Box>}
+            {error && <Box sx={{ textAlign: "center", mt: 4, color: "red" }}>{error}</Box>}
         </Box>
     );
 };
