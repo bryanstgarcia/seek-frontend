@@ -9,7 +9,7 @@ import { Dashboard } from "../components/Dashboard/Dashboard.jsx";
 
 const statusMap = {
     pending: "Pending 📋",
-    "in_progress": "In Progress 👷🏽",
+    in_progress: "In Progress 👷🏽",
     completed: "Completed ✅",
 };
 
@@ -25,7 +25,20 @@ export const Tasks = () => {
     return (
         <Box sx={{ width: "100%", minHeight: "90vh" }}>
             {/* Header */}
-            <Box sx={{display: "flex", justifyContent: "space-between"}}>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: {
+                        xs: "flex-start",
+                        md: "space-between"
+                    },
+                    flexDirection: {
+                        xs: "column",
+                        md: "row"
+                    },
+                    alignItems: "flex-start"
+                }}
+            >
                 <Dashboard />
                 <ActionBar />
             </Box>
@@ -46,8 +59,14 @@ export const Tasks = () => {
                     </TasksColumn>
                 ))}
             </TasksBoard>
-            {loading && <Box sx={{ textAlign: "center", mt: 4 }}>Loading tasks...</Box>}
-            {error && <Box sx={{ textAlign: "center", mt: 4, color: "red" }}>{error}</Box>}
+            {loading && (
+                <Box sx={{ textAlign: "center", mt: 4 }}>Loading tasks...</Box>
+            )}
+            {error && (
+                <Box sx={{ textAlign: "center", mt: 4, color: "red" }}>
+                    {error}
+                </Box>
+            )}
         </Box>
     );
 };

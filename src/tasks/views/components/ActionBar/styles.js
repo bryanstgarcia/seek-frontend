@@ -10,7 +10,6 @@ export const styles = {
         backgroundColor: "background.paper",
         boxShadow: 2,
         borderRadius: 2,
-        mb: 3,
     },
     actionButtons: { display: "flex", gap: 2 },
 };
