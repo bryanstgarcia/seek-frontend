@@ -7,9 +7,6 @@ export const styles = {
         justifyContent: "center",
         px: { xs: 2, md: 6 },
         py: 2,
-        backgroundColor: "background.paper",
-        boxShadow: 2,
-        borderRadius: 2,
     },
     actionButtons: { display: "flex", gap: 2 },
 };
